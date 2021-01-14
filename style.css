@@ -40,6 +40,19 @@ body {
   background: #6ab04c;
 }
 
+.sky.light {
+  background: #7ed6df;
+}
+.violet.light {
+  background: #e056fd;
+}
+.orange.light {
+  background: #ffbe76;
+}
+.green.light {
+  background: #badc58;
+}
+
 .btn-start {
   position: absolute;
   width: 400px;
