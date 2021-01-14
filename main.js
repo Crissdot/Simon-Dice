@@ -7,6 +7,7 @@ const LAST_LEVEL = 10;
 
 class Game {
     constructor() {
+        this.start = this.start.bind(this);
         this.start();
         this.generateSimon();
         setTimeout(this.nextLevel, 500);
@@ -15,13 +16,21 @@ class Game {
     start() {
         this.nextLevel = this.nextLevel.bind(this);
         this.chooseColor = this.chooseColor.bind(this);
-        btnStart.classList.add("hide");
+        this.toggleBtnStart();
         this.level = 1;
         this.colors = {
             sky,
             violet,
             orange,
             green,
+        }
+    }
+
+    toggleBtnStart() {
+        if(btnStart.classList.contains("hide")) {
+            btnStart.classList.remove("hide");
+        } else {
+            btnStart.classList.add("hide");
         }
     }
 
@@ -81,13 +90,13 @@ class Game {
                 this.level++;
                 this.deleteEventClick();
                 if(this.level === LAST_LEVEL + 1) {
-                    // win
+                    this.win();
                 } else {
                     setTimeout(this.nextLevel, 1500);
                 }
             }
         } else {
-            // Lost
+            this.lost();
         }
     }
 
@@ -109,6 +118,19 @@ class Game {
         this.colors.violet.removeEventListener('click', this.chooseColor);
         this.colors.orange.removeEventListener('click', this.chooseColor);
         this.colors.green.removeEventListener('click', this.chooseColor);
+    }
+
+    win(){
+        swal('¡Victoria!', '¡Has ganado el juego!', 'success')
+            .then(this.start);
+    }
+
+    lost(){
+        swal('Derrota', 'Has perdido :(', 'error')
+            .then(() => {
+                this.deleteEventClick();
+                this.start();
+            })
     }
 
 }
