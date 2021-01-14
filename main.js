@@ -3,15 +3,17 @@ const violet = document.getElementById("violet");
 const orange = document.getElementById("orange");
 const green = document.getElementById("green");
 const btnStart = document.getElementById("btnStart");
+const LAST_LEVEL = 10;
 
 class Game {
     constructor() {
         this.start();
         this.generateSimon();
-        this.nextLevel();
+        setTimeout(this.nextLevel, 500);
     }
 
     start() {
+        this.nextLevel = this.nextLevel.bind(this);
         this.chooseColor = this.chooseColor.bind(this);
         btnStart.classList.add("hide");
         this.level = 1;
@@ -24,10 +26,11 @@ class Game {
     }
 
     generateSimon() {
-        this.simon = new Array(10).fill(0).map(n => Math.floor(Math.random() * 4));
+        this.simon = new Array(LAST_LEVEL).fill(0).map(n => Math.floor(Math.random() * 4));
     }
 
     nextLevel() {
+        this.subLevel = 0;
         this.turnOnSimon();
         this.addEventClick();
     }
@@ -69,7 +72,43 @@ class Game {
     }
 
     chooseColor(ev) {
+        const nameColor = ev.target.dataset.color;
+        const numColor = this.convertColorToNumber(nameColor);
+        this.turnOnColor(nameColor);
+        if(numColor === this.simon[this.subLevel]) {
+            this.subLevel++;
+            if(this.subLevel === this.level) {
+                this.level++;
+                this.deleteEventClick();
+                if(this.level === LAST_LEVEL + 1) {
+                    // win
+                } else {
+                    setTimeout(this.nextLevel, 1500);
+                }
+            }
+        } else {
+            // Lost
+        }
+    }
 
+    convertColorToNumber(color) {
+        switch(color) {
+            case 'sky':
+                return 0;
+            case 'violet':
+                return 1;
+            case 'orange':
+                return 2;
+            case 'green':
+                return 3;
+        }
+    }
+
+    deleteEventClick() {
+        this.colors.sky.removeEventListener('click', this.chooseColor);
+        this.colors.violet.removeEventListener('click', this.chooseColor);
+        this.colors.orange.removeEventListener('click', this.chooseColor);
+        this.colors.green.removeEventListener('click', this.chooseColor);
     }
 
 }
