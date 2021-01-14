@@ -12,6 +12,7 @@ class Game {
     }
 
     start() {
+        this.chooseColor = this.chooseColor.bind(this);
         btnStart.classList.add("hide");
         this.level = 1;
         this.colors = {
@@ -28,6 +29,7 @@ class Game {
 
     nextLevel() {
         this.turnOnSimon();
+        this.addEventClick();
     }
 
     turnOnSimon() {
@@ -59,8 +61,19 @@ class Game {
         this.colors[color].classList.remove('light');
     }
 
+    addEventClick() {
+        this.colors.sky.addEventListener('click', this.chooseColor);
+        this.colors.violet.addEventListener('click', this.chooseColor);
+        this.colors.orange.addEventListener('click', this.chooseColor);
+        this.colors.green.addEventListener('click', this.chooseColor);
+    }
+
+    chooseColor(ev) {
+
+    }
+
 }
 
 function startGame() {
-    window.game = new Game();
+    const game = new Game();
 }
